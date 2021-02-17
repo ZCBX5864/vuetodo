@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-size: 30px;
+    font-family: monospace;
+    }
+    #app{
+        background-color: #D2C9B8;
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+    }
+  button{
+      border-radius: 5px;
+      width: 100px;
+      background-color: #BFBBB4;
+      color: black;
+  }
+  button:hover{
+    background-color:#E1B4B7;
+    color: white;
+    transition: .3s;
+  }
+.addbtn{
+    border-radius: 5px;
+      width: 100px;
+      background-color: #BFBBB4;
+      color: black;
+}
+.addbtn:hover{
+    background-color:#E1B4B7;
+    color: white;
+    transition: .3s;
+}
+input:focus{
+ background-color: #BFBBB4;
+ color: white;
+ transition: 1s;
+}
+
+
+</style>
+<body>
+<div id="app">
+<h1>待辦清單</h1>
+
+<div v-if="!isediting">
+<input type="text" placeholder="請輸入..." v-model="todo" >
+<input type="submit" value="新增" @click="addbtn" class="addbtn">
+</div>
+
+<div v-else>
+    <input type="text" placeholder="請輸入..." v-model="todo">
+    <input type="submit" value="修改" @click="updatebtn"class="addbtn" >
+    </div>
+<div class="box">
+<li v-for="(todo,index) in todos ">
+    {{index+1}}.{{todo}}
+    <button @click="editbtn(index,todo)">修改</button>
+    <button @click="deletebtn(index)">刪除</button>
+</li>
+</div>
+
+
+
+</div>
+
+
+
+   <script>
+var app =new Vue({
+    el:'#app',
+    data:{
+        isediting:false,
+        selectIndex:0,
+        todo:'',
+        todos:['Run','Dance','Game']
+    },
+    methods:{
+        addbtn(){
+            if(this.todo.length>0 &&this.todo.trim().length !=0){
+                this.todos.push(this.todo)
+                this.todo=''.trim() 
+            }else{
+                 return false
+             
+            }
+        },
+        editbtn(index,todo){
+       this.todo=todo.trim()
+       this.isediting=true
+       this.selectIndex =index
+        },
+        deletebtn(index){
+     this.todos.splice(index,1)
+        },
+        updatebtn(){
+            this.todos.splice(this.selectIndex,1,this.todo)
+            this.isediting =false
+            this.todo=''
+        }
+    }
+})
+   </script>
+</body>
+</html>
